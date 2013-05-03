@@ -18,6 +18,7 @@ import com.plugin.GCM.GCMPlugin;
 public class GCMIntentService extends GCMBaseIntentService {
 
 	public static final String ME = "GCMReceiver";
+	public static final int PETICION_NUEVO_JUEGO = 1;
 
 	public GCMIntentService() {
 		super("GCMIntentService");
@@ -66,7 +67,7 @@ public class GCMIntentService extends GCMBaseIntentService {
 				Log.v(ME + ":onMessage extras ", extras.getString("data"));
 
 				JSONObject json;
-				json = new JSONObject().put("event", "data");
+				json = new JSONObject().put("event", "message");
 
 				// My application on my host server sends back to "EXTRAS"
 				// variables message and msgcnt
@@ -95,11 +96,40 @@ public class GCMIntentService extends GCMBaseIntentService {
 
 	}
 
+	/**
+	 * Muestra la notificacion en el status bar
+	 * @param context
+	 * @param extras
+	 */
 	private void mostrarNotificacion(Context context, Bundle extras) {
-/*		
-			String message = "data: " + extras.getString("data");
-		String title = "Triqui";
-		Notification notif = new Notification(android.R.drawable.btn_star_big_on, message, System.currentTimeMillis());
+		
+		// Variables de la notificación
+		String titulo = "Triqui";
+		String mensaje = "";
+        try {
+        	// Obtiene el objeto JSON
+			JSONObject json = new JSONObject(extras.getString("data"));
+			
+			// Obtiene el codigo del mensaje
+			int codigo = Integer.parseInt( (String) json.get("code") );
+			
+			// Verifica el código
+			switch(codigo){
+				case PETICION_NUEVO_JUEGO: 
+					mensaje = json.get("nombre") + " te ha invitado a un nuevo juego";
+					break;
+				case 2: 
+					break;
+				default:
+					Log.v("Triqui", "Llego un codigo no valido");
+			}
+			
+			
+		} catch (JSONException e) {
+			Log.v("Triqui", e.getMessage());
+		}		
+
+		Notification notif = new Notification(R.drawable.ic_launcher, mensaje, System.currentTimeMillis());
 		notif.flags = Notification.FLAG_AUTO_CANCEL;
 		notif.defaults |= Notification.DEFAULT_SOUND;
 		notif.defaults |= Notification.DEFAULT_VIBRATE;
@@ -109,41 +139,12 @@ public class GCMIntentService extends GCMBaseIntentService {
 		PendingIntent contentIntent = PendingIntent.getActivity(context, 0,
 				notificationIntent, 0);
 
-		notif.setLatestEventInfo(context, title, message, contentIntent);
+		notif.setLatestEventInfo(context, titulo, mensaje, contentIntent);
 		String ns = Context.NOTIFICATION_SERVICE;
-		NotificationManager mNotificationManager = (NotificationManager) context
-				.getSystemService(ns);
+		NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(ns);
 		mNotificationManager.notify(1, notif);
 	
-*/		
-		
-		NotificationCompat.Builder mBuilder =
-		        new NotificationCompat.Builder(this)
-		        .setSmallIcon(android.R.drawable.btn_star_big_on)
-		        .setContentTitle("Triqui")
-		        .setContentText("Hello World!");
-		
-		// Creates an explicit intent for an Activity in your app
-		Intent resultIntent = new Intent(this, MainActivity.class);
 
-		// The stack builder object will contain an artificial back stack for the
-		// started Activity.
-		// This ensures that navigating backward from the Activity leads out of
-		// your application to the Home screen.
-		TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-		
-		// Adds the back stack for the Intent (but not the Intent itself)
-		stackBuilder.addParentStack(MainActivity.class);
-
-		// Adds the Intent that starts the Activity to the top of the stack
-		stackBuilder.addNextIntent(resultIntent);
-		PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-		mBuilder.setContentIntent(resultPendingIntent);
-		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-		// mId (1) allows you to update the notification later on.
-		mNotificationManager.notify(1, mBuilder.build());		
-		
 	}
 
 	@Override

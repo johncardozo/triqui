@@ -26,14 +26,15 @@ function localGet(id){
 }
 
 /* Funcion que guarda un nuevo juego localmente */
-function localSaveGame(nuevoJuego){
+function localSaveGame(nuevoJuego, turno){
 
     // Verifica si localStorage es soportado
     if(typeof(Storage)!=="undefined")
     {
         // Modifica el nuevo juego con turno para el oponente
-        // 0: turno de oponente, 1: mi turno
-        nuevoJuego.turno = 0;
+        // 0: turno de oponente
+        // 1: mi turno
+        nuevoJuego.turno = turno;
 
         //localStorage.removeItem("juegos");
 

@@ -17,9 +17,6 @@ window.onbeforeunload  =  function(e) {
 /* Evento que es ejecutado cuando Phonegap está cargado en el dispositivo */
 document.addEventListener('deviceready', function() {
 
-  //log('Evento deviceready recibido');
-  //log('Invocando GCMRegistrar.register: Proyecto=' + idProject);
-  
   // Bandera para saber si Phonegap está listo en el dispositivos
   gApp.DeviceReady = true;
 
@@ -34,7 +31,6 @@ document.addEventListener('deviceready', function() {
 /* Funcion que se ejecuta cada vez que se recibe un evento */
 function GCM_Event(e)
 {
-    //log('Evento recibido: ' + e.event);
 
     switch( e.event )  {
       case 'registered':
@@ -43,29 +39,36 @@ function GCM_Event(e)
         gApp.gcmregid = e.regid;
         if ( gApp.gcmregid.length > 0 )
         {
-      //    log('Dispositivo registrado: regid = <br>' + e.regid);
-
           // Guarda el regId localmente
           localSave('regid', e.regid);
-
-          // ==============================================================================
-          // This is where you would code to send the REGID to your server for this device
-          // ==============================================================================
         }
 
         break
 
       case 'message':
+
+        // Crea el objeto JSON a partir de los datos recibidos
+        var objetoJSON = JSON.parse(e.data);
+
+        // Guarda el nuevo juego localmente
+        localSaveGame(objetoJSON, 1);
+
+        // Actualiza la lista de juegos del home
+        showGamesHome();
+
+        // Navega al home
+        $.mobile.changePage( "#home", { transition: "slide", reverse: true });
+
         // the definition of the e variable is json return defined in GCMIntentService.java
         // In my case on registered I have EVENT, MSG and MSGCNT defined
 
         // You will NOT receive any messages unless you build a HOST server application to send
         // Messages to you, This is just here to show you how it might work
 
-        $("#app-status-ul").append('<li>MESSAGE -> MSG: ' + e.message + '</li>');
-        $("#app-status-ul").append('<li>MESSAGE -> MSGCNT: ' + e.msgcnt + '</li>');
+     //   $("#app-status-ul").append('<li>MESSAGE -> MSG: ' + e.message + '</li>');
+     //   $("#app-status-ul").append('<li>MESSAGE -> MSGCNT: ' + e.msgcnt + '</li>');
 
-        log('El mensaje recibido es: ' + e.message);
+        log('El mensaje recibido es: ' + e.data);
 
 
         break;
@@ -80,8 +83,8 @@ function GCM_Event(e)
 
 
       default:
-        $("#app-status-ul").append('<li>EVENT -> Unknown, an event was received and we do not know what it is</li>');
-
+        //$("#app-status-ul").append('<li>EVENT -> Unknown, an event was received and we do not know what it is</li>');
+        log("???");
         break;
     }
 }
@@ -89,14 +92,10 @@ function GCM_Event(e)
 /* Funcion que se ejecuta cuando hay un registro exitoso en GCM */
 function GCM_Success(e)
 {
-  //log('GCM_Success -> Registro exitoso...');
-  //log('Esperando por la respuesta del regId de Google');
 }
 
 /* Funcion que se ejecuta cuando hay un error en el registro en GCM */
 function GCM_Fail(e)
 {
-    //log('GCM_Success -> El plugin falló en el registro...');  
-    //log('GCM_Success -> '+ e.msg);  
 }
 

@@ -97,7 +97,7 @@ function crearJuego(){
             }else{ // No hay error
 
             	// Guarda el nuevo juego localmente
-            	localSaveGame(objetoJSON['data']);
+            	localSaveGame(objetoJSON['data'], 0);
 
 				// Actualiza la lista de juegos del home
 				showGamesHome();
