@@ -65,6 +65,20 @@ function showGamesHome(){
 
 }
 
+/* Funcion que muestra un indicador de espera en la interfaz */
+function loader(mensaje){
+
+	// Genera el mensaje a mostrar
+	var html = "<span class='ui-icon ui-icon-loading'>" + mensaje + "</span>";
+
+	// Muestra el indicador de espera...
+	$.mobile.loading( "show", {
+		text: "cargando",
+		textVisible: true,
+		theme: "a",
+		html: html
+	});
+}
 
 /* Funcion que permite mostrar los mensajes de log en el home */
 
@@ -74,4 +88,9 @@ function log(mensaje){
 	if(logActivo){
 		$('#listaLog').append('<li class="ui-li ui-li-static ui-btn-up-c ui-first-child" data-mini="true">' +  mensaje + '</li>');		
 	}
-}   
+} 
+
+
+
+
+

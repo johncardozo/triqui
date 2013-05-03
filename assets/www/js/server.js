@@ -3,6 +3,9 @@ var idProject = '887454835127';
 /* Funcion que crea una cuenta en el servidor */
 function crearCuenta(){
 
+	// Muestra el indicador de espera...
+	loader('Espere por favor...');
+
 	// Obtiene los valores
 	var nombre = $('#nombre').val();
 	var email = $('#email').val();
@@ -93,7 +96,8 @@ function crearJuego(){
             
 			// Verifica si hubo error
             if(objetoJSON['error'] !== undefined){ // Hay Error
-            	alert(objetoJSON['error']['descripcion']);
+            	//alert(objetoJSON['error']['descripcion']);
+            	alert('Hubo un error creando el juego');
             }else{ // No hay error
 
             	// Guarda el nuevo juego localmente
