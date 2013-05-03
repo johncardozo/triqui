@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>triqui</title>
+
+	<link rel="stylesheet" href="css/themes/default/jquery.mobile-1.3.1.min.css" />
+
+	<!-- JQuery -->
+	<script src="js/libs/jquery-1.9.1.min.js"></script>
+	<script src="js/libs/jquery.mobile-1.3.1.min.js"></script>
+
+	<!-- GCM -->
+	<script type="text/javascript" charset="utf-8" src="js/libs/cordova-2.1.0.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/GCMPlugin.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/GCMScript.js"></script>
+
+	<!-- App -->
+	<script src="js/storage.js"></script>
+	<script src="js/server.js"></script>
+	<script src="js/app.js"></script>
+
+</head>
+<body>
+
+<!-- Inicio de Home: #home -->
+<div data-role="page" id="home">
+
+	<div data-role="header">
+		<a id="linkRegistro" href="#registro" data-icon="gear" data-corners="false" data-iconpos="notext" data-theme="a" data-transition="slide">Cuenta</a>
+		<h1>Triqui</h1>				
+		<a id="linkNuevoJuego" href="#nuevoJuego" data-icon="plus" data-corners="false" data-iconpos="notext" data-theme="a" data-transition="slide">Nuevo juego</a>
+	</div><!-- /header -->
+
+	<div data-role="content" >
+
+	<div data-role="collapsible" data-collapsed="false" data-mini="true" data-theme="b" data-content-theme="c" data-corners="false">
+	    <h4>Mi turno</h4>
+	    <ul id="listaJuegosMiTurno" data-role="listview">
+	       
+<!-- 	        <li><a href="#tablero">Camilo</a></li>
+	        <li><a href="#tablero">Andres</a></li>
+ -->	    
+	    </ul>
+	</div>
+
+	<div data-role="collapsible" data-collapsed="false" data-mini="true" data-theme="b" data-content-theme="c" data-corners="false">
+	    <h4>Su turno</h4>
+	    <ul id="listaJuegosSuTurno" data-role="listview">
+	    	<!--
+	        <li><a href="#tablero">Hector</a></li>
+	        <li><a href="#tablero">Andres</a></li>
+	        <li><a href="#tablero">Carlos</a></li>
+	    -->
+	    </ul>
+	</div>
+
+	<div id="panelLog" data-role="collapsible" data-collapsed="false" data-mini="true" data-theme="b" data-content-theme="c" data-corners="false">
+		<h4>Log</h4>
+		<ul data-role="listview" data-inset="true" id="listaLog" data-corners="false" data-mini="true"></ul>
+	</div>
+
+
+	</div><!-- /content -->
+</div><!-- /page home -->
+
+<!-- Inicio de nuevo juego: #nuevoJuego -->
+<div data-role="page" id="nuevoJuego">
+
+	<div data-role="header">
+		<a href="#home" data-icon="home" data-iconpos="notext" data-theme="b">Home</a>
+		<h1>Triqui</h1>				
+	</div><!-- /header -->
+
+	<div data-role="content">
+		<h2>Nuevo juego</h2>
+		<p>Email del oponente</p>
+		<input type="email" data-clear-btn="false" name="emailOponente" id="emailOponente" value="">
+		<a id="botonCrearJuego" href="#" data-role="button" data-icon="plus" data-corners="false" data-theme="b">Invitar</a>
+
+	</div><!-- /content -->
+
+</div><!-- /page nuevoJuego -->
+
+<!-- Inicio de registro: #registro -->
+<div data-role="page" id="registro">
+
+	<div data-role="header">
+		<a href="#home" data-icon="home" data-iconpos="notext" data-theme="b">Home</a>
+		<h1>Triqui</h1>				
+	</div><!-- /header -->
+
+	<div data-role="content">
+		<h2>Datos</h2>
+		<p>Nombre</p>
+		<input type="text" data-clear-btn="false" name="nombre" id="nombre" value="">
+		<p>Email</p>
+		<input type="email" data-clear-btn="false" name="email" id="email" value="">
+		<a href="#" id="botonCrearCuenta" data-role="button" data-icon="plus" data-corners="false" data-theme="b">Crear cuenta</a>
+
+	</div><!-- /content -->
+
+</div><!-- /page registro -->
+
+<!-- Inicio de tablero: #tablero -->
+<div data-role="page" id="tablero">
+
+	<div data-role="header">
+		<a href="#home" data-icon="home" data-iconpos="notext" data-theme="b">Home</a>
+		<h1>Triqui</h1>				
+	</div><!-- /header -->
+
+	<div data-role="content">
+		<div class="ui-grid-b">
+		    <div class="ui-block-a"><div id="celda1" class="ui-bar ui-bar-c" style="height:60px;"></div></div>
+		    <div class="ui-block-b"><div id="celda2" class="ui-bar ui-bar-c" style="height:60px;"></div></div>
+		    <div class="ui-block-c"><div id="celda3" class="ui-bar ui-bar-c" style="height:60px;"></div></div>
+		    <div class="ui-block-a"><div id="celda4" class="ui-bar ui-bar-c" style="height:60px;"></div></div>
+		    <div class="ui-block-b"><div id="celda5" class="ui-bar ui-bar-c" style="height:60px;"></div></div>
+		    <div class="ui-block-c"><div id="celda6" class="ui-bar ui-bar-c" style="height:60px;"></div></div>
+		    <div class="ui-block-a"><div id="celda7" class="ui-bar ui-bar-c" style="height:60px;"></div></div>
+		    <div class="ui-block-b"><div id="celda8" class="ui-bar ui-bar-c" style="height:60px;"></div></div>
+		    <div class="ui-block-c"><div id="celda9" class="ui-bar ui-bar-c" style="height:60px;"></div></div>
+		</div><!-- /grid-c -->
+	</div><!-- /content -->
+
+</div><!-- /page tablero -->
+
+<!-- Mensaje de datos incompletos en el registro -->
+<!-- <div data-role="popup" id="dialogoDatos" data-dismissible="false" style="max-width:400px;" class="ui-corner-all">
+    <div data-role="header" data-theme="a" class="ui-corner-top">
+        <h3>Datos incompletos</h3>
+    </div>
+    <div data-role="content" data-theme="d" class="ui-corner-bottom ui-content">
+        <h3 class="ui-title">Are you sure you want to delete this page?</h3>
+        <p>Debe digitar el nombre y el email</p>
+        <a href="#" data-role="button" data-inline="true" data-rel="back" data-theme="c">Aceptar</a>
+    </div>
+</div>   -->
+
+
+</body>
+</html>
