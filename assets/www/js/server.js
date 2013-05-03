@@ -45,7 +45,7 @@ function crearCuenta(){
 			$('#linkRegistro').hide();
 
 			// Mensaje al usuario
-			alert('Su cuenta ha sido creada');
+//			alert('Su cuenta ha sido creada');
 
 			// Navega al home
 			$.mobile.changePage( "#home", { transition: "slide", reverse: true });

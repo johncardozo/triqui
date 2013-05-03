@@ -20,7 +20,7 @@ function localGet(id){
         // Retorna el resultado
         return localStorage.getItem(id);
     } else {
-        log('No se soporta localstorage...');
+        //log('No se soporta localstorage...');
     }
 	
 }
@@ -67,7 +67,7 @@ function localSaveGame(nuevoJuego, turno){
         }
 
     } else {
-        log('No se soporta localstorage...');
+        //log('No se soporta localstorage...');
     }
 
 }
@@ -84,14 +84,13 @@ function localGetAllGames(){
 
         // Verifica si existe la lista
         if (juegosJSON == null) {
-            alert('no hay juegos');
             return { juegos: [] };
         }else{
             return juegosJSON;
         }
 
     } else {
-        log('No se soporta localstorage...');
+        //log('No se soporta localstorage...');
     }
 
 } 
