@@ -52,11 +52,12 @@ function showGamesHome(){
 
 	// Recorre los juegos
 	$.each(juegosObtenidos['juegos'], function(indice, valor){
+
 		// Verifica si es MI turno (1) o SU turno (0)
 		if(valor.turno == 1){
-			cadenaMisJuegos += '<li data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" data-theme="c" class="ui-btn ui-btn-up-c ui-btn-icon-right ui-li-has-arrow ui-li ui-first-child"><div class="ui-btn-inner ui-li"><div class="ui-btn-text"><a href="#tablero" class="ui-link-inherit">' + valor.nombre + '</a></div><span class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</span></div></li>';
+			cadenaMisJuegos += '<li data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" data-theme="c" class="ui-btn ui-btn-up-c ui-btn-icon-right ui-li-has-arrow ui-li ui-first-child"><div class="ui-btn-inner ui-li"><div class="ui-btn-text"><a href="#tablero?idjuego=' + valor.idjuego + '" class="ui-link-inherit">' + valor.nombre + '(' +  valor.idjuego + ')</a></div><span class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</span></div></li>';
 		}else{
-			cadenaSusJuegos += '<li data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" data-theme="c" class="ui-btn ui-btn-up-c ui-btn-icon-right ui-li-has-arrow ui-li ui-first-child"><div class="ui-btn-inner ui-li"><div class="ui-btn-text"><a href="#tablero" class="ui-link-inherit">' + valor.nombre + '</a></div><span class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</span></div></li>';
+			cadenaSusJuegos += '<li data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" data-theme="c" class="ui-btn ui-btn-up-c ui-btn-icon-right ui-li-has-arrow ui-li ui-first-child"><div class="ui-btn-inner ui-li"><div class="ui-btn-text"><a href="#tablero?idjuego=' + valor.idjuego + '" class="ui-link-inherit">' + valor.nombre + '(' +  valor.idjuego + ')</a></div><span class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</span></div></li>';
 		}
 	});
 
@@ -78,6 +79,11 @@ function loader(mensaje){
 		theme: "a",
 		html: html
 	});
+}
+
+/* Muestra el tablero de un juego */
+function showBoard(idjuego){
+	$('#spanIdJuego').text(idjuego);
 }
 
 /* Funcion que permite mostrar los mensajes de log en el home */
