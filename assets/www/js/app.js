@@ -13,6 +13,8 @@ $(document).ready(function(){
 	// Click en el boton crear juego
 	$('#botonCrearJuego').click( crearJuego );
 
+	// Click en una celda del tablero
+	$('.celda').click( hacerJugada );
 
 });
 
@@ -55,9 +57,9 @@ function showGamesHome(){
 
 		// Verifica si es MI turno (1) o SU turno (0)
 		if(valor.turno == 1){
-			cadenaMisJuegos += '<li data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" data-theme="c" class="ui-btn ui-btn-up-c ui-btn-icon-right ui-li-has-arrow ui-li ui-first-child"><div class="ui-btn-inner ui-li"><div class="ui-btn-text"><a href="#tablero?idjuego=' + valor.idjuego + '" class="ui-link-inherit">' + valor.nombre + '(' +  valor.idjuego + ')</a></div><span class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</span></div></li>';
+			cadenaMisJuegos += '<li data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" data-theme="c" class="ui-btn ui-btn-up-c ui-btn-icon-right ui-li-has-arrow ui-li ui-first-child"><div class="ui-btn-inner ui-li"><div class="ui-btn-text"><a href="#tablero?idjuego=' + valor.idjuego + '" class="ui-link-inherit">' + valor.nombre + ' (' +  valor.idjuego + ')</a></div><span class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</span></div></li>';
 		}else{
-			cadenaSusJuegos += '<li data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" data-theme="c" class="ui-btn ui-btn-up-c ui-btn-icon-right ui-li-has-arrow ui-li ui-first-child"><div class="ui-btn-inner ui-li"><div class="ui-btn-text"><a href="#tablero?idjuego=' + valor.idjuego + '" class="ui-link-inherit">' + valor.nombre + '(' +  valor.idjuego + ')</a></div><span class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</span></div></li>';
+			cadenaSusJuegos += '<li data-corners="false" data-shadow="false" data-iconshadow="true" data-wrapperels="div" data-icon="arrow-r" data-iconpos="right" data-theme="c" class="ui-btn ui-btn-up-c ui-btn-icon-right ui-li-has-arrow ui-li ui-first-child"><div class="ui-btn-inner ui-li"><div class="ui-btn-text"><a href="#tablero?idjuego=' + valor.idjuego + '" class="ui-link-inherit">' + valor.nombre + ' (' +  valor.idjuego + ')</a></div><span class="ui-icon ui-icon-arrow-r ui-icon-shadow">&nbsp;</span></div></li>';
 		}
 	});
 
@@ -83,7 +85,72 @@ function loader(mensaje){
 
 /* Muestra el tablero de un juego */
 function showBoard(idjuego){
+
+	// Obtiene el juego localmente
+	var juego = localGetGameById(idjuego);
+
+	// Muestra el nombre del oponente
+	$('#tituloOponente').text(juego.nombre);
+
+	// Guarda el id del juego
 	$('#spanIdJuego').text(idjuego);
+
+	// Verifica si es mi turno
+	if(juego.turno == 0){
+		$('#explicacionTurno').text('Es mi turno de jugar');
+	}else{
+		$('#explicacionTurno').text('Es el turno de ' + juego.nombre);
+	}
+
+	// Muestra las jugadas
+	var tablero = juego.tablero;
+
+	// Recorre el tablero para mostrarlo
+	$.each(tablero, function(indice, valor){
+		// Genera el nombre de la celda
+		var nombreCelda = '#celda' + indice;
+		
+		// Genera el simbolo a mostrar en la celda
+		var simbolo = '';
+		if(valor == 0){
+			simbolo = '';
+		}else if(valor == 1){
+			simbolo = 'X';
+		}else{
+			simbolo = 'Y';
+		}
+
+		// Escribe el simbolo en la celda
+		$(nombreCelda).text(simbolo);
+
+	});
+}
+
+/* Funcion que permite hacer una jugada */
+function hacerJugada(){
+
+	// Obtiene el contenido de la celda
+	var valor = $(this).text();
+
+	// Verifica si la celda esta vacia
+	if ( valor === '' ) {
+
+		// Obtiene el identificador del juego
+		var idjuego = $('#spanIdJuego').text();
+
+		// Obtiene el numero de celda en que se hizo clic
+		var celda = this.id.substr(5);
+
+		// Obtiene el identifidor del jugador
+		var idjugador = localGet('id');
+
+		// Crea la jugada en el servidor
+		crearJugada(idjugador, idjuego, celda);
+
+	}else{
+		alert('No se puede jugar en esa posición!!!');
+	}
+
 }
 
 /* Funcion que permite mostrar los mensajes de log en el home */

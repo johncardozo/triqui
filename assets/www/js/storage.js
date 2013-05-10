@@ -25,7 +25,10 @@ function localGet(id){
 	
 }
 
-/* Funcion que guarda un nuevo juego localmente */
+/* Funcion que guarda un nuevo juego localmente
+    0: turno del oponente
+    1: mi turno
+*/
 function localSaveGame(nuevoJuego, turno){
 
     // Verifica si localStorage es soportado
@@ -35,13 +38,14 @@ function localSaveGame(nuevoJuego, turno){
         // 0: turno de oponente
         // 1: mi turno
         nuevoJuego.turno = turno;
+        nuevoJuego.tablero = [0,0,0,0,0,0,0,0,0]; // tablero vacio
 
         //localStorage.removeItem("juegos");
 
         // Obtiene la lista de juegos
         var juegos = localStorage.getItem("juegos");
 
-        // Verifica si existe la lista
+        // Verifica si existe es el primer juego en el dispositivo
         if (juegos == null) {
 
             // Crea la lista de juegos
@@ -72,7 +76,15 @@ function localSaveGame(nuevoJuego, turno){
 
 }
 
-/* Funcion que obtiene todos los juegos actuales */
+/* Funcion que obtiene todos los juegos actuales
+{
+    juegos: 
+        [ 
+            { idjuego: 92, nombre="John", turno:0, tablero:[0,0,0,0,0,0,0,0,0] },
+            { idjuego: 38, nombre="Cata", turno:1, tablero:[0,1,0,0,-1,0,0,1,0] }
+        ]
+}
+*/
 function localGetAllGames(){
 
     // Verifica si localStorage es soportado
@@ -94,6 +106,36 @@ function localGetAllGames(){
     }
 
 } 
+
+/* Obtiene un juego almacenado localmente dado su id */
+function localGetGameById(id){
+
+    // Verifica si localStorage es soportado
+    if(typeof(Storage)!=="undefined")
+    {
+
+        // Obtiene los juegos del sistema
+        var juegosJSON = JSON.parse(localStorage.getItem("juegos"));
+
+        // Verifica si existe la lista
+        if (juegosJSON == null) {
+            return null;
+        }else{
+
+            // Busca el juego con el identificador recibido
+            var juego = $.grep(juegosJSON['juegos'], function(i){
+                            return i.idjuego == id;
+                        });
+
+            // Retorna la primera (y unica) posición del arreglo resultante
+            return juego[0];
+        }
+
+    } else {
+        //log('No se soporta localstorage...');
+    }
+
+}
 
 
 

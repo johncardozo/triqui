@@ -51,6 +51,7 @@ function GCM_Event(e)
         var objetoJSON = JSON.parse(e.data);
 
         // Guarda el nuevo juego localmente
+        // 1: mi turno
         localSaveGame(objetoJSON, 1);
 
         // Actualiza la lista de juegos del home

@@ -35,8 +35,7 @@ var router = new $.mobile.Router({
         }, 
         { 
           defaultHandler: function(type, ui, page) {
-            //console.log("Default handler called due to unknown route (" + type + ", " + ui + ", " + page + ")"
-            );
+            //console.log("Default handler called due to unknown route (" + type + ", " + ui + ", " + page + ")");
           },
           defaultHandlerEvents: "s"
         });

@@ -55,10 +55,11 @@ function crearCuenta(){
 
 		})
 		.fail(function(data) { 
-			console.log('fail... ' + data);
+			alert('Hubo un error creando la cuenta. Intente mas tarde');
+			console.log('fail... ' + JSON.stringify(data));
 		})
 		.always(function(data) { 
-			console.log('always... ' + data);
+			console.log('always... ' + JSON.stringify(data));
 		});
 
 	}else{
@@ -100,8 +101,8 @@ function crearJuego(){
             	alert('Hubo un error creando el juego');
             }else{ // No hay error
 
-            	// Guarda el nuevo juego localmente
-            	localSaveGame(objetoJSON['data'], 0);
+            	// Guarda el nuevo juego localmente (0 = turno del oponente)
+            	localSaveGame(objetoJSON['data'], 1);
 
 				// Actualiza la lista de juegos del home
 				showGamesHome();
@@ -112,15 +113,46 @@ function crearJuego(){
 
 		})
 		.fail(function(data) { 
-			console.log('fail... ' + data);
+			alert('Hubo un error creando el juego. Intente mas tarde');
+			console.log('fail... ' + JSON.stringify(data));
 		})
 		.always(function(data) { 
-			console.log('always... ' + data);
+			console.log('always... ' + JSON.stringify(data));
 		});
 
 	}else{
-		alert('No ha creado una cuenta');
+		alert('No hay conexion al servidor. Intente de nuevo');
 	}
+
+}
+
+/* Función que permite hacer una jugada en el servidor */
+function crearJugada(idjugador, idjuego, celda){
+
+	alert('idjugador='+ idjugador + ', idjuego=' + idjuego + ', celda=' + celda);
+
+	// Verifica que exista un jugador local
+	if(idjugador != null){
+
+		$.post(url + 'nuevajugada', {idjugador: idjugador, idjuego: idjuego, jugada: celda})
+		.done(function(data) { 
+
+			alert(JSON.stringify(data))
+
+		})
+		.fail(function(data) { 
+			alert('Hubo un error enviando la jugada. Intente mas tarde');
+			console.log('fail... ' + JSON.stringify(data));
+		})
+		.always(function(data) { 
+			console.log('always... ' + JSON.stringify(data));
+		});
+
+	}else{
+		alert('No hay conexion al servidor. Intente de nuevo');
+	}
+
+
 
 }
 
