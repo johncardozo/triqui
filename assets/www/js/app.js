@@ -86,7 +86,7 @@ function loader(mensaje){
 /* Muestra el tablero de un juego */
 function showBoard(idjuego){
 
-	// Obtiene el juego localmente
+	// Obtiene el juego local
 	var juego = localGetGameById(idjuego);
 
 	// Muestra el nombre del oponente

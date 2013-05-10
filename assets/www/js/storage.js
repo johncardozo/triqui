@@ -76,6 +76,56 @@ function localSaveGame(nuevoJuego, turno){
 
 }
 
+/* Funcion que actualiza el juego local */
+function localUpdateGame(nuevoJuego){
+
+    // Verifica si localStorage es soportado
+    if(typeof(Storage)!=="undefined")
+    {
+        // Obtiene la lista de juegos
+        var juegos = localStorage.getItem("juegos");
+
+        // Verifica si existe es el primer juego en el dispositivo
+        if (juegos == null) {
+
+            // Crea la lista de juegos
+            var listaJuegos = { juegos: [] };
+
+            // Agrega el nuevo elemento a la lista
+            listaJuegos.juegos.push(nuevoJuego);
+
+            // Guarda la lista localmente
+            localStorage.setItem("juegos", JSON.stringify(listaJuegos));
+
+        }else{
+
+            // Obtiene los juegos del sistema
+            var juegosJSON = JSON.parse(localStorage.getItem("juegos"));
+
+            // Recorre el tablero para mostrarlo
+            var tam = juegosJSON['juegos'].length;
+
+            for (var i = 0; i < tam; i++){
+
+                // Encuentra el juego buscado
+                if (juegosJSON['juegos'][i].idjuego == nuevoJuego.idjuego){ 
+                    juegosJSON['juegos'][i] = nuevoJuego;
+                    break;
+                }
+
+            }
+
+            // Guarda la lista localmente
+            localStorage.setItem("juegos", JSON.stringify(juegosJSON));
+
+        }
+
+    } else {
+        //log('No se soporta localstorage...');
+    }
+
+}
+
 /* Funcion que obtiene todos los juegos actuales
 {
     juegos: 

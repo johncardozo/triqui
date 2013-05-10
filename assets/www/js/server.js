@@ -4,7 +4,7 @@ var idProject = '887454835127';
 function crearCuenta(){
 
 	// Muestra el indicador de espera...
-	loader('Espere por favor...');
+	loader('Creando cuenta...');
 
 	// Obtiene los valores
 	var nombre = $('#nombre').val();
@@ -71,6 +71,9 @@ function crearCuenta(){
 /* Funcion crear nuevo juego */
 function crearJuego(){
 
+	// Muestra el indicador de espera...
+	loader('Invitando...');
+
 	// Obtiene los valores digitados por el usuario
 	var email = $('#emailOponente').val();
 
@@ -98,11 +101,11 @@ function crearJuego(){
 			// Verifica si hubo error
             if(objetoJSON['error'] !== undefined){ // Hay Error
             	//alert(objetoJSON['error']['descripcion']);
-            	alert('Hubo un error creando el juego');
+            	alert(JSON.stringify(objetoJSON['error']['descripcion']));
             }else{ // No hay error
 
             	// Guarda el nuevo juego localmente (0 = turno del oponente)
-            	localSaveGame(objetoJSON['data'], 1);
+            	localSaveGame(objetoJSON['data'], 0);
 
 				// Actualiza la lista de juegos del home
 				showGamesHome();
@@ -129,6 +132,20 @@ function crearJuego(){
 /* Función que permite hacer una jugada en el servidor */
 function crearJugada(idjugador, idjuego, celda){
 
+	// Muestra el indicador de espera...
+	loader('Jugando...');
+
+	/*
+	el servidor recibe
+idjugador
+idjuego
+jugada (valor entre 0 y 8)
+
+devuelve
+data - tablero
+o 
+error
+*/
 	alert('idjugador='+ idjugador + ', idjuego=' + idjuego + ', celda=' + celda);
 
 	// Verifica que exista un jugador local
@@ -137,7 +154,23 @@ function crearJugada(idjugador, idjuego, celda){
 		$.post(url + 'nuevajugada', {idjugador: idjugador, idjuego: idjuego, jugada: celda})
 		.done(function(data) { 
 
-			alert(JSON.stringify(data))
+			// Obtiene el tablero
+			var respuesta = JSON.parse(data);
+
+			// Obtiene el juego local
+			var juego = localGetGameById(idjuego);
+
+			// Modifica el juego
+	        // 0: turno de oponente
+	        // 1: mi turno
+			juego.tablero = respuesta['data']['tablero'];
+			juego.turno = 0;
+
+			// Guarda el juego local
+			localUpdateGame(juego);
+
+			// Muestra el juego en el tablero
+			showBoard(idjuego);
 
 		})
 		.fail(function(data) { 
