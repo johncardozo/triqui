@@ -3,6 +3,10 @@ gApp = new Array();
 gApp.deviceready = false;
 gApp.gcmregid = '';
 
+// CODIGOS DE MENSAJE
+var NUEVO_JUEGO  = 1;
+var NUEVA_JUGADA = 2;
+
 window.onbeforeunload  =  function(e) {
 
   if ( gApp.gcmregid.length > 0 )
@@ -47,26 +51,47 @@ function GCM_Event(e)
 
       case 'message':
 
-        /* CODIGOS DE MENSAJE (code)
-            1: invitación a nuevo juego
-            2: se hizo una nueva jugada en un juego
-        */
         // Crea el objeto JSON a partir de los datos recibidos
         var objetoJSON = JSON.parse(e.data);
 
-        alert(JSON.stringify(objetoJSON));
-        alert('codigo de mensaje: ' + objetoJSON.code);
+        if (objetoJSON.code == NUEVO_JUEGO) { 
 
-        // Guarda el nuevo juego localmente
-        // 1: mi turno
-        localSaveGame(objetoJSON, 1);
+          // Guarda el nuevo juego localmente
+          // 1: mi turno
+          localSaveGame(objetoJSON, 1);
 
-        // Actualiza la lista de juegos del home
-        showGamesHome();
+          // Actualiza la lista de juegos del home
+          showGamesHome();
 
-        // Navega al home
-        $.mobile.changePage( "#home", { transition: "slide", reverse: true });
+          // Navega al home
+          $.mobile.changePage( "#home", { transition: "slide", reverse: true });
 
+        }else if (objetoJSON.code == NUEVA_JUGADA) { 
+
+          alert(JSON.stringify(objetoJSON));
+
+          // Obtiene los datos de la jugada
+          var idjuego = objetoJSON.idjuego;
+          var tablero = objetoJSON.tablero;
+
+          // Obtiene el juego local
+          var juego = localGetGameById(idjuego);
+alert('ANTES: ' + JSON.stringify(juego));
+          // Modifica el juego
+          juego.tablero = tablero;
+          juego.turno = 1;
+alert('DESPUES: ' + JSON.stringify(juego));
+          // Actualiza el juego local
+          localUpdateGame(juego);
+
+          // Actualiza la lista de juegos del home  
+          showGamesHome();
+
+          // Navega al juego
+                    
+
+        }
+  
         break;
 
       case 'error':
