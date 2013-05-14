@@ -3,9 +3,6 @@ var idProject = '887454835127';
 /* Funcion que crea una cuenta en el servidor */
 function crearCuenta(){
 
-	// Muestra el indicador de espera...
-	loader('Creando cuenta...');
-
 	// Obtiene los valores
 	var nombre = $('#nombre').val();
 	var email = $('#email').val();
@@ -18,6 +15,9 @@ function crearCuenta(){
 		return;
 	}
 
+	// Muestra el indicador de espera...
+	showLoader('Creando cuenta...');
+
 	// Recupera el regId de GCM
 	var regid = localGet('regid');
 
@@ -29,7 +29,6 @@ function crearCuenta(){
 	// Recupera el regId de GCM
 	var regid = localGet('regid');
 
-	
 	if(regid != null){
 
 		var jqxhr = $.post(url + 'registrar', {nombre: nombre, email: email, regid: regid})
@@ -55,14 +54,24 @@ function crearCuenta(){
 
 		})
 		.fail(function(data) { 
+
+			// Muestra el mensaje al usuario
 			alert('Hubo un error creando la cuenta. Intente mas tarde');
+
 			console.log('fail... ' + JSON.stringify(data));
 		})
 		.always(function(data) { 
+			// Oculta el indicador de espera
+			hideLoader();
+
 			console.log('always... ' + JSON.stringify(data));
 		});
 
 	}else{
+		// Oculta el indicador de espera
+		hideLoader();
+		
+		// Muestra el mensaje al usuario		
 		alert('No hay conexion al servidor. Intente de nuevo');
 	}
 
@@ -70,9 +79,6 @@ function crearCuenta(){
 
 /* Funcion crear nuevo juego */
 function crearJuego(){
-
-	// Muestra el indicador de espera...
-	loader('Invitando...');
 
 	// Obtiene los valores digitados por el usuario
 	var email = $('#emailOponente').val();
@@ -84,6 +90,9 @@ function crearJuego(){
 		alert('Debe digitar el mail del oponente');
 		return;
 	}
+
+	// Muestra el indicador de espera...
+	showLoader('Invitando...');
 
 	// Recupera el id del jugador
 	var id = localGet('id');
@@ -116,10 +125,14 @@ function crearJuego(){
 
 		})
 		.fail(function(data) { 
+			// Muestra el mensaje al usuario		
 			alert('Hubo un error creando el juego. Intente mas tarde');
 			console.log('fail... ' + JSON.stringify(data));
 		})
 		.always(function(data) { 
+			// Oculta el indicador de espera
+			hideLoader();
+
 			console.log('always... ' + JSON.stringify(data));
 		});
 
@@ -133,7 +146,7 @@ function crearJuego(){
 function crearJugada(idjugador, idjuego, celda){
 
 	// Muestra el indicador de espera...
-	loader('Jugando...');
+	showLoader('Jugando...');
 
 	/*
 	el servidor recibe
@@ -178,10 +191,16 @@ error
 			console.log('fail... ' + JSON.stringify(data));
 		})
 		.always(function(data) { 
+			// Oculta el indicador de espera
+			hideLoader();
+
 			console.log('always... ' + JSON.stringify(data));
 		});
 
 	}else{
+			// Oculta el indicador de espera
+			hideLoader();
+
 		alert('No hay conexion al servidor. Intente de nuevo');
 	}
 

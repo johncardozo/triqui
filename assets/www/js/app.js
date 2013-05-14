@@ -24,8 +24,15 @@ function init(){
 	// Muestra u oculta el panel de Log
 	if(logActivo){ $('#panelLog').show(); } else { $('#panelLog').hide(); } 
 
-	// Obtiene el nombre del usuario actual
+	// Obtiene los datos del nombre del usuario actual
 	var id = localGet('id');
+	var nombre = localGet('nombre');
+	var email = localGet('email');
+
+	if (id != null) {
+		$('#tituloNombreJugador').text(nombre);
+		$('#tituloMailJugador').text(email);
+	}
 
 	// Configura la barra superior del juego
 	// FIXME: No esta funcionado
@@ -69,7 +76,7 @@ function showGamesHome(){
 }
 
 /* Funcion que muestra un indicador de espera en la interfaz */
-function loader(mensaje){
+function showLoader(mensaje){
 
 	// Genera el mensaje a mostrar
 	var html = "<span class='ui-icon ui-icon-loading'>" + mensaje + "</span>";
@@ -81,6 +88,11 @@ function loader(mensaje){
 		theme: "a",
 		html: html
 	});
+}
+
+/* Funcion que oculta el indicador de espera */
+function hideLoader(){
+	$.mobile.loading( "hide" );
 }
 
 /* Muestra el tablero de un juego */
@@ -131,7 +143,7 @@ function hacerJugada(){
 
 	// Obtiene el contenido de la celda
 	var valor = $(this).text();
-
+alert('>>' + valor + '<<');
 	// Verifica si la celda esta vacia
 	if ( valor === '' ) {
 
