@@ -129,7 +129,7 @@ function showBoard(idjuego){
 		}else if(valor == 1){
 			simbolo = 'X';
 		}else{
-			simbolo = 'Y';
+			simbolo = 'O';
 		}
 
 		// Escribe el simbolo en la celda
@@ -143,21 +143,31 @@ function hacerJugada(){
 
 	// Obtiene el contenido de la celda
 	var valor = $(this).text();
-alert('>>' + valor + '<<');
+
 	// Verifica si la celda esta vacia
 	if ( valor === '' ) {
 
 		// Obtiene el identificador del juego
 		var idjuego = $('#spanIdJuego').text();
 
-		// Obtiene el numero de celda en que se hizo clic
-		var celda = this.id.substr(5);
+		// Obtiene el juego
+		var juego = localGetGameById(idjuego);
 
-		// Obtiene el identifidor del jugador
-		var idjugador = localGet('id');
+		// Verifica que sea MI turno de jugar
+		if ( juego.turno == 1 ) {
 
-		// Crea la jugada en el servidor
-		crearJugada(idjugador, idjuego, celda);
+			// Obtiene el numero de celda en que se hizo clic
+			var celda = this.id.substr(5);
+
+			// Obtiene el identifidor del jugador
+			var idjugador = localGet('id');
+
+			// Crea la jugada en el servidor
+			crearJugada(idjugador, idjuego, celda);
+
+		} else{
+			alert('Es el turno del oponente');
+		}
 
 	}else{
 		alert('No se puede jugar en esa posición!!!');

@@ -145,25 +145,15 @@ function crearJuego(){
 /* Función que permite hacer una jugada en el servidor */
 function crearJugada(idjugador, idjuego, celda){
 
-	// Muestra el indicador de espera...
-	showLoader('Jugando...');
-
-	/*
-	el servidor recibe
-idjugador
-idjuego
-jugada (valor entre 0 y 8)
-
-devuelve
-data - tablero
-o 
-error
-*/
-	alert('idjugador='+ idjugador + ', idjuego=' + idjuego + ', celda=' + celda);
+//	alert('idjugador='+ idjugador + ', idjuego=' + idjuego + ', celda=' + celda);
 
 	// Verifica que exista un jugador local
 	if(idjugador != null){
 
+		// Muestra el indicador de espera...
+		showLoader('Jugando...');
+
+		// Hace la peticion al servidor
 		$.post(url + 'nuevajugada', {idjugador: idjugador, idjuego: idjuego, jugada: celda})
 		.done(function(data) { 
 

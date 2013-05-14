@@ -3,15 +3,14 @@ gApp = new Array();
 gApp.deviceready = false;
 gApp.gcmregid = '';
 
-
 window.onbeforeunload  =  function(e) {
 
-    if ( gApp.gcmregid.length > 0 )
-    {
-      // The same routines are called for success/fail on the unregister. You can make them unique if you like
-      window.GCM.unregister( GCM_Success, GCM_Fail );      // close the GCM
+  if ( gApp.gcmregid.length > 0 )
+  {
+    // The same routines are called for success/fail on the unregister. You can make them unique if you like
+    window.GCM.unregister( GCM_Success, GCM_Fail );      // close the GCM
+  }
 
-    }
 };
 
 /* Evento que es ejecutado cuando Phonegap está cargado en el dispositivo */
@@ -28,10 +27,11 @@ document.addEventListener('deviceready', function() {
 
 }, false );
 
-/* Funcion que se ejecuta cada vez que se recibe un evento */
+/* Funcion que se ejecuta cada vez que se recibe un evento. 
+   La definición de la variable e es un objeto JSON definido en GCMIntentService.java */
 function GCM_Event(e)
 {
-
+    // Verifica el tipo de mensaje
     switch( e.event )  {
       case 'registered':
         // the definition of the e variable is json return defined in GCMReceiver.java
@@ -47,8 +47,15 @@ function GCM_Event(e)
 
       case 'message':
 
+        /* CODIGOS DE MENSAJE (code)
+            1: invitación a nuevo juego
+            2: se hizo una nueva jugada en un juego
+        */
         // Crea el objeto JSON a partir de los datos recibidos
         var objetoJSON = JSON.parse(e.data);
+
+        alert(JSON.stringify(objetoJSON));
+        alert('codigo de mensaje: ' + objetoJSON.code);
 
         // Guarda el nuevo juego localmente
         // 1: mi turno
@@ -60,32 +67,15 @@ function GCM_Event(e)
         // Navega al home
         $.mobile.changePage( "#home", { transition: "slide", reverse: true });
 
-        // the definition of the e variable is json return defined in GCMIntentService.java
-        // In my case on registered I have EVENT, MSG and MSGCNT defined
-
-        // You will NOT receive any messages unless you build a HOST server application to send
-        // Messages to you, This is just here to show you how it might work
-
-     //   $("#app-status-ul").append('<li>MESSAGE -> MSG: ' + e.message + '</li>');
-     //   $("#app-status-ul").append('<li>MESSAGE -> MSGCNT: ' + e.msgcnt + '</li>');
-
-        log('El mensaje recibido es: ' + e.data);
-
-
         break;
-
 
       case 'error':
 
-        $("#app-status-ul").append('<li>ERROR -> MSG:' + e.msg + '</li>');
-
+        console.log(e.msg);
         break;
 
-
-
       default:
-        //$("#app-status-ul").append('<li>EVENT -> Unknown, an event was received and we do not know what it is</li>');
-        log("???");
+        console.log('Desconocido! un evento fue recibido y no se sabe que fue!!!');
         break;
     }
 }
